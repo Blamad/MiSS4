@@ -234,3 +234,4 @@ UpgradeLog*.htm
 
 Debug/
 MiSS4/Debug/
+MiSS4/*.dat
