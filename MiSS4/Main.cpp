@@ -17,9 +17,6 @@ void drawResult();
 
 double fun(double x, double y)
 {
-	//Moze tu coœ zjeba³em..
-	//https://www.wolframalpha.com/input/?i=y%3D3*exp(-2*x) - to wzór z tego tutka: http://lpsa.swarthmore.edu/NumInt/NumIntFourth.html
-	//Ten wzór bankowo jest jakiœ z³y.
 	return -2*y;
 }
 
