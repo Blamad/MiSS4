@@ -1,26 +1,53 @@
 #include <iostream>
-#include "GnuPlot.h"
-
-#define DEBUG
+#include <fstream>
+#include "Gnuplot.h"
 
 using namespace std;
 
+string FILE_PATH = "plot.dat";
+
+double fun(double x);
 void calculateRK3(double x0, double e);
-void testDrawGnuPlot();
+void drawResult();
+
+double fun(double x)
+{
+	return x;
+}
+
+void calculateRK3(double x0, double epsilon)
+{
+	ofstream resultFile;
+	resultFile.open(FILE_PATH);
+	for (double i = -1; i <= 1; i+=0.1)
+	{
+		resultFile << i << " " << i << "\n";
+	}
+	resultFile.close();
+}
+
+void drawResult()
+{
+	Gnuplot gp;
+	gp("set xrange [-1:1]");
+	gp("set yrange [-1:1]");
+	gp("set xlabel \"Oœ X\"");
+	gp("set ylabel \"Oœ Y\"");
+	gp("set title \"Wykres z pliku\"");
+
+	gp("plot \"" + FILE_PATH + "\" index 0:0 using 1:2 with linespoints" );
+}
 
 int main(int argc, char* argv[])
 {
 	double x0, epsilon;
 
 	if (argc != 3)
-#ifdef DEBUG
 	{
+		cout << "Niewystarczaj¹ca iloœæ parametrów! Domyœlnie u¿yte zostan¹ x0=1 & e=1!";
 		x0 = 1;
 		epsilon = 1;
 	}
-#elif
-		return;
-#endif
 	else
 	{
 		x0 = atoi(argv[1]);
@@ -28,42 +55,6 @@ int main(int argc, char* argv[])
 	}
 
 	calculateRK3(x0, epsilon);
-}
-
-void calculateRK3(double x0, double epsilon)
-{
-	testDrawGnuPlot();
-}
-
-void kozakPlot()
-{
-	Gnuplot gp;
-
-	gp("set isosample 100\n");
-	gp("min=-1\n");
-	gp("max=1\n");
-	gp("pi=3.141592\n");
-	gp("set hidden3d\n");
-	gp("set pm3d\n");
-	gp("set contour\n");
-	gp("splot [min:max] [min:max] x*x+2*y*y-0.3*cos(3*pi*x)-0.4*cos(4*pi*y)+0.7\n");
-	gp("pause -1\n");
-
-
-	std::cout << std::endl << "Press ENTER to continue..." << std::endl;
-	std::cin.clear();
-	std::cin.ignore(std::cin.rdbuf()->in_avail());
-	std::cin.get();
-}
-
-void biednyPlot()
-{
-	Gnuplot gp;
-	gp("plot sin(x)");
+	drawResult();
 	system("pause");
-}
-
-void testDrawGnuPlot()
-{
-	kozakPlot();
 }
