@@ -36,6 +36,7 @@ void drawResult()
 	gp("set title \"Wykres z pliku\"");
 
 	gp("plot \"" + FILE_PATH + "\" index 0:0 using 1:2 with linespoints" );
+	system("pause");
 }
 
 int main(int argc, char* argv[])
@@ -44,7 +45,7 @@ int main(int argc, char* argv[])
 
 	if (argc != 3)
 	{
-		cout << "Niewystarczaj¹ca iloœæ parametrów! Domyœlnie u¿yte zostan¹ x0=1 & e=1!";
+		cout << "Niewystarczaj¹ca ilosc parametrow! Domyslnie uzyte zostana x0=1 & e=1!" << "\n";
 		x0 = 1;
 		epsilon = 1;
 	}
@@ -56,5 +57,4 @@ int main(int argc, char* argv[])
 
 	calculateRK3(x0, epsilon);
 	drawResult();
-	system("pause");
 }
