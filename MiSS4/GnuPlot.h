@@ -1,5 +1,5 @@
-#ifndef GNUPLOT_H_
-#define GNUPLOT_H_
+#ifndef GNUPLOT_H
+#define GNUPLOT_H
 #include <string>
 #include <iostream>
 
