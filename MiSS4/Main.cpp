@@ -43,7 +43,7 @@ void calculateRK3(double y0, double epsilon)
 		double K1 = H * fun(x, y);
 		double K2 = H * fun((x + H/2), (y + K1/2));
 		double K3 = H * fun((x + H), (y - K1 + 2*K2));
-		y = y + (y + ((K1 + 4*K2 + K3) / 6));
+		y = y + ((K1 + 4*K2 + K3) / 6);
 		
 		resultFile << x << " " << y << "\n";
 	}
