@@ -9,6 +9,7 @@ int MIN_X = 0;
 int MAX_X = 1;
 
 double DEFAULT_Y0 = 3;
+double DEFAULT_EPSILON = 0.0001;
 
 double fun(double x, double y);
 void calculateRK3(double y0, double e);
@@ -22,7 +23,7 @@ int main(int argc, char* argv[])
 	{
 		cout << "Niewystarczajaca ilosc parametrow! Uzywam domyslnych.\n";
 		y0 = DEFAULT_Y0;
-		epsilon = 0.0001;
+		epsilon = DEFAULT_EPSILON;
 	}
 	else
 	{
@@ -32,7 +33,8 @@ int main(int argc, char* argv[])
 
 	//http://www.ikb.poznan.pl/almamater/wyklady/metody_komputerowe_03-04/03.pdf
 	//błąd aproksymacji - Ο(h^4)
-	h = pow(epsilon, 1 / 4.0);
+	//błąd globalny - O(h^3)
+	h = pow(epsilon, 1 / 3.0);
 
 	calculateRK3(y0, h);
 	drawResult();
@@ -48,8 +50,10 @@ void calculateRK3(double y0, double h)
 
 	resultFile << x << " " << y << "\n";
 
-	for (x = MIN_X + h; x <= MAX_X; x += h)
+	while (1)
 	{
+		x += h;
+
 		/*Zrodla:
 		http://www.ikb.poznan.pl/almamater/wyklady/metody_komputerowe_03-04/03.pdf - wzor
 		http://lpsa.swarthmore.edu/NumInt/NumIntFourth.html - sposob implementacji
@@ -61,6 +65,9 @@ void calculateRK3(double y0, double h)
 		y = y + ((K1 + 4 * K2 + K3) / 6);
 
 		resultFile << x << " " << y << "\n";
+
+		if (x > MAX_X)
+			break;
 	}
 
 	resultFile.close();
@@ -74,6 +81,7 @@ double fun(double x, double y)
 void drawResult()
 {
 	Gnuplot gp;
+	gp("set autoscale y");
 	gp("set xrange [" + to_string(MIN_X) + ":" + to_string(MAX_X) + "]");
 	gp("set xlabel \"Oś X\"");
 	gp("set ylabel \"Oś Y\"");
