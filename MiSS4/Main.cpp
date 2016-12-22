@@ -1,5 +1,6 @@
 ﻿#include <iostream>
 #include <fstream>
+#include <cmath>
 #include "Gnuplot.h"
 
 using namespace std;
@@ -8,12 +9,20 @@ string FILE_PATH = "plot.dat";
 int MIN_X = 0;
 int MAX_X = 1;
 
-double DEFAULT_Y0 = 3;
-double DEFAULT_EPSILON = 0.0001;
+double DEFAULT_Y0 = 0;
+double DEFAULT_EPSILON = 1/(1000.0f);
 
 double fun(double x, double y);
 void calculateRK3(double y0, double e);
 void drawResult();
+
+
+double fun(double t, double x)
+{
+	//return 1 / x;
+	//return sin(6*t);
+	return x;
+}
 
 int main(int argc, char* argv[])
 {
@@ -34,7 +43,8 @@ int main(int argc, char* argv[])
 	//http://www.ikb.poznan.pl/almamater/wyklady/metody_komputerowe_03-04/03.pdf
 	//błąd aproksymacji - Ο(h^4)
 	//błąd globalny - O(h^3)
-	h = pow(epsilon, 1 / 3.0);
+	//h = pow(epsilon, 1 / 3.0);
+	h = epsilon;
 
 	calculateRK3(y0, h);
 	drawResult();
@@ -73,11 +83,6 @@ void calculateRK3(double y0, double h)
 	resultFile.close();
 }
 
-double fun(double x, double y)
-{
-	return -2 * y;
-}
-
 void drawResult()
 {
 	Gnuplot gp;
@@ -87,6 +92,6 @@ void drawResult()
 	gp("set ylabel \"Oś Y\"");
 	gp("set title \"Wykres z pliku\"");
 	gp("set key top left");
-	gp("plot \"" + FILE_PATH + "\" index 0:0 using 1:2 title \"f(x)\" with linespoints");
+	gp("plot \"" + FILE_PATH + "\" index 0:0 using 1:2 title \"f(x)\" with lines");
 	system("pause");
 }
